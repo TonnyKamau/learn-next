@@ -1,12 +1,12 @@
 ## Learning Next.js with the App Router and Daisy UI
 
-This project is focused on learning Next.js 13+ with the new App Router, while also incorporating Daisy UI for streamlined UI development. Here are some key aspects we're exploring:
+This project is focused on learning Next.js 14 with the new App Router, while also incorporating Daisy UI for streamlined UI development. Here are some key aspects we're exploring:
 
 1. **App Router**: We're using Next.js' new App Router, which provides a more intuitive and powerful way to handle routing in your application.
 
 2. **Daisy UI**: We've integrated Daisy UI, a plugin for Tailwind CSS, to speed up our UI development process with pre-built components and utility classes.
 
-3. **Server Components**: We're leveraging Next.js 13's server components for improved performance and SEO.
+3. **Server Components**: We're leveraging Next.js 14 server components for improved performance and SEO.
 
 4. **API Routes**: Exploring how to create and use API routes within the App Router structure.
 
