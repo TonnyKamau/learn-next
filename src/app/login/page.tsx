@@ -91,6 +91,11 @@ const LoginPage = () => {
               )}
             </button>
           </form>
+          <div className="text-center">
+            <Link href="/forgotpassword" className="link link-primary text-sm">
+              Forgot Password?
+            </Link>
+          </div>
           <div className="divider">OR</div>
           <p className="text-center text-sm">
             Don't have an account?{" "}
