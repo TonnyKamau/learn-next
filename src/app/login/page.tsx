@@ -25,8 +25,12 @@ const LoginPage = () => {
       const response = await axios.post("/api/users/login", user);
       console.log("Login success", response.data);
       router.push("/profile");
-    } catch (error: any) {
-      console.log("Login failed", error.message);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.log("Login failed", error.message);
+      } else {
+        console.log("Login failed", "An unknown error occurred");
+      }
     } finally {
       setLoading(false);
     }
@@ -98,7 +102,7 @@ const LoginPage = () => {
           </div>
           <div className="divider">OR</div>
           <p className="text-center text-sm">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link href="/signup" className="link link-primary">
               Sign up here
             </Link>

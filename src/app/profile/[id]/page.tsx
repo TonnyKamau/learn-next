@@ -1,6 +1,12 @@
 import React from 'react'
 
-const UserProfile = ({params}: any) => {
+interface UserProfileProps {
+  params: {
+    id: string
+  }
+}
+
+const UserProfile: React.FC<UserProfileProps> = ({ params }) => {
   return (
     <div>
         <h1>User Profile</h1>

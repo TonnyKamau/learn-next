@@ -3,19 +3,22 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
-const verifyEmailPage = () => {
-  const [error, setError] = useState(false);
-  const [token, setToken] = useState("");
-  const [verified, setVerified] = useState(false);
+const VerifyEmailPage: React.FC = () => {
+  const [error, setError] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
+  const [verified, setVerified] = useState<boolean>(false);
+
   const verifyUserEmail = async () => {
     try {
-      const response = await axios.post("/api/users/verifyemail", { token });
+      await axios.post("/api/users/verifyemail", { token });
       setError(false);
       setVerified(true);
-    } catch (error: any) {
+    } catch (error) {
       setError(true);
+      console.error("Error verifying email:", error);
     }
   };
+
   useEffect(() => {
     const urlToken = window.location.search.split("=")[1];
     setToken(urlToken || "");
@@ -46,4 +49,4 @@ const verifyEmailPage = () => {
   );
 };
 
-export default verifyEmailPage;
+export default VerifyEmailPage;
