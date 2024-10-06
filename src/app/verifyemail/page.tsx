@@ -22,7 +22,7 @@ const VerifyEmailPage: React.FC = () => {
   useEffect(() => {
     const urlToken = window.location.search.split("=")[1];
     setToken(urlToken || "");
-  }, []);
+  });
   useEffect(() => {
     if (token.length > 0) {
       verifyUserEmail();

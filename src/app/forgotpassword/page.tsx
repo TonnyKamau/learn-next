@@ -1,6 +1,5 @@
 "use client";
 import axios from "axios";
-import { AxiosError } from "axios";
 import React, { useEffect, useState } from "react";
 
 const ForgotPasswordPage = () => {
