@@ -9,18 +9,20 @@ export async function POST(request: NextRequest) {
     const { email } = reqBody;
     const user = await User.findOne({ email });
     if (!user) {
-      return NextResponse.json({ error: "User not found", status: 404 });
-    }
-    await sendEmail({ email, emailType: "RESET", userId: user._id });
-    return NextResponse.json({
+      return NextResponse.json({ message: "User not found", status: 404 });
+    } else if (user) {  
+      await sendEmail({ email, emailType: "RESET", userId: user._id });
+      return NextResponse.json({
+        status: 200,
       message: "Email sent successfully",
-      success: true,
-    });
+        success: true,
+      });
+          }
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return NextResponse.json({ error: error.message, status: 500 });
+        return NextResponse.json({ message: error.message, status: 500 });
     }
     // If it's not an Error object, return a generic error message
-    return NextResponse.json({ error: "An unexpected error occurred", status: 500 });
+    return NextResponse.json({ message: "An unexpected error occurred", status: 500 });
   }
 }
