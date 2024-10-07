@@ -49,7 +49,14 @@ const ResetPasswordPage = () => {
           toast.error(response.data.message);
         }
       } catch (error) {
-        toast.error("Failed to reset password. Please try again.");
+        if (axios.isAxiosError(error)) {
+          toast.error(
+            error.response?.data?.message ||
+              "An error occurred. Please try again."
+          );
+        } else {
+          toast.error("An unexpected error occurred. Please try again.");
+        }
       } finally {
         setLoading(false);
       }
