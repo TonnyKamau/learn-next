@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const SignupPage = () => {
   const router = useRouter();
@@ -30,13 +31,21 @@ const SignupPage = () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/users/signup", user);
-      console.log("Signup success", response.data);
-      router.push("/login");
+      if (response.data.status === 201) {
+        toast.success(response.data.message);
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      } else if (response.data.status === 400) {
+        toast.error(response.data.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log("Signup failed", error.response?.data?.message || error.message);
+        toast.error(error.response?.data?.message || error.message);
       } else {
-        console.log("Signup failed", "An unexpected error occurred");
+        toast.error("An unexpected error occurred");
       }
     } finally {
       setLoading(false);

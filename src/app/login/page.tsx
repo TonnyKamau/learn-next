@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 const LoginPage = () => {
   const router = useRouter();
@@ -23,13 +24,18 @@ const LoginPage = () => {
     try {
       setLoading(true);
       const response = await axios.post("/api/users/login", user);
-      console.log("Login success", response.data);
-      router.push("/profile");
+      if (response.data.status === 200) {
+        router.push("/profile");
+      } else if (response.data.status === 403) {
+        toast.error(response.data.message);
+      } else if (response.data.status === 400) {
+        toast.error(response.data.message);
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        console.log("Login failed", error.message);
+        toast.error(error.message);
       } else {
-        console.log("Login failed", "An unknown error occurred");
+        toast.error("An unknown error occurred");
       }
     } finally {
       setLoading(false);

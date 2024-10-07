@@ -11,8 +11,12 @@ export async function POST(request: NextRequest) {
     const requestBody = await request.json();
     const { username, email, password } = requestBody;
     const userExists = await User.findOne({ email });
+    const userExistsByUsername = await User.findOne({ username });
     if (userExists) {
-      return NextResponse.json({ error: "User already exists", status: 400 });
+      return NextResponse.json({ message: "Email already exists", status: 400 });
+    }
+    else if (userExistsByUsername) {
+      return NextResponse.json({ message: "Username already exists", status: 400 });
     }
     const salt = await bcryptjs.genSalt(10);
     const hashedPassword = await bcryptjs.hash(password, salt);
@@ -28,9 +32,9 @@ export async function POST(request: NextRequest) {
     });
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return NextResponse.json({ error: error.message, status: 500 });
+      return NextResponse.json({ message: error.message, status: 500 });
     }
     // Handle cases where the caught value is not an Error object
-    return NextResponse.json({ error: "An unknown error occurred", status: 500 });
+    return NextResponse.json({ message: "An unknown error occurred", status: 500 });
   }
 }

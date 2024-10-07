@@ -4,9 +4,16 @@ import type { NextRequest } from "next/server";
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
-  const isPublicRoute = path === "/verifyemail";
+  const isPublicRoute = path === "/";
+  const isResetPasswordRoute = path === "/resetpassword";
+  const isVerifyEmailRoute = path === "/verifyemail";
   const isAuthRoute = path === "/login" || path === "/signup";
   const token = request.cookies.get("token")?.value || "";
+
+  // Allow access to email verification and forgot password routes regardless of token
+  if (isVerifyEmailRoute || isResetPasswordRoute) {
+    return NextResponse.next();
+  }
 
   if (isPublicRoute && token) {
     return NextResponse.redirect(new URL("/", request.nextUrl));
@@ -19,5 +26,12 @@ export function middleware(request: NextRequest) {
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/", "/profile", "/login", "/signup", "/verifyemail"],
+  matcher: [
+    "/",
+    "/profile",
+    "/login",
+    "/signup",
+    "/verifyemail",
+    "/resetpassword",
+  ],
 };

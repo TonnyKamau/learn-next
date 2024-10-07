@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 export const dbConnect = async () => {
     try {
-        mongoose.connection.setMaxListeners(20);
+        mongoose.connection.setMaxListeners(25);
         await mongoose.connect(process.env.MONGO_URI!);
         const connection = mongoose.connection;
         connection.on('connected', () => {

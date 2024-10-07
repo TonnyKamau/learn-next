@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-hot-toast";
 
 const ProfilePage = () => {
   const [loading, setLoading] = useState(false);
@@ -11,13 +12,24 @@ const ProfilePage = () => {
   const router = useRouter();
 
   const handleLogout = async () => {
-    try {
+    try {   
       setLoading(true);
       setIsLoggingOut(true);
+      const response = await axios.get("/api/users/logout");
+      if (response.data.status === 200) {
+        toast.success(response.data.message);
+        router.push("/login");
+      } else {
+        toast.error(response.data.message);
+      }
       await axios.get("/api/users/logout");
       router.push("/login");
     } catch (error) {
-      console.error("Logout failed:", error);
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || error.message);
+      } else {
+        toast.error("An unknown error occurred");
+      }
       setIsLoggingOut(false);
     } finally {
       setLoading(false);

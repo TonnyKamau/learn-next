@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 
 import "./globals.css";
+import Providers from "./providers";
 
 export const metadata: Metadata = {
   title: "Next App",
@@ -21,7 +22,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="winter">
-      <body className={roboto.className}>{children}</body>
+      <body className={roboto.className}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

@@ -11,19 +11,17 @@ export async function POST(request: NextRequest) {
     const user = await User.findOne({ email });
     if (!user) {
       return NextResponse.json({
-        error: "User does not exist",
+        message: "User does not exist",
         success: false,
         status: 400,
       });
     }
     const passwordMatch = await bcryptjs.compare(password, user.password);
     if (!passwordMatch) {
-      return NextResponse.json({ error: "Invalid password", status: 400 });
-    }
-    // Check if user is verified
-    if (!user.isVerified) {
+      return NextResponse.json({ message: "Invalid password", status: 400 });
+    } else if (!user.isVerified) {
       return NextResponse.json({
-        error: "Please verify your email before logging in",
+        message: "Please verify your email before logging in",
         success: false,
         status: 403,
       });
@@ -49,8 +47,8 @@ export async function POST(request: NextRequest) {
     return response;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      return NextResponse.json({ error: error.message, status: 500 });
+      return NextResponse.json({ message: error.message, status: 500 });
     }
-    return NextResponse.json({ error: "An unknown error occurred", status: 500 });
+    return NextResponse.json({ message: "An unknown error occurred", status: 500 });
   }
 }
