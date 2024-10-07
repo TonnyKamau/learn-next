@@ -48,7 +48,7 @@ const ResetPasswordPage = () => {
         } else {
           toast.error(response.data.message);
         }
-      } catch (error) {
+      } catch (error: unknown) {
         if (axios.isAxiosError(error)) {
           toast.error(
             error.response?.data?.message ||
