@@ -17,17 +17,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: "User not found" , status: 404 });
     }
     //hash the password
+    else if (user) {
     const salt = await genSalt(10);
     const hashedPassword = await hash(newPassword, salt);
     user.password = hashedPassword;
     user.forgotPasswordToken = undefined;
     user.forgotPasswordTokenExpiry = undefined;
     await user.save();
-
-    return NextResponse.json({ message: "Password reset successful" });
+    return NextResponse.json({ message: "Password reset successful" , status: 200 });
+    }
   } catch (error: unknown) {
     console.error("Password reset error:", error);
-    return NextResponse.json({ message: "Password reset failed", status: 500 });
+      return NextResponse.json({ message: "Password reset failed", status: 400 });
   }
 }
 

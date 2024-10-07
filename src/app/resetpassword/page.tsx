@@ -2,10 +2,10 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 const ResetPasswordPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
   const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(true);
@@ -29,23 +29,27 @@ const ResetPasswordPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      toast.error("Passwords do not match");
     } else if (password.length < 8) {
-      setError("Password must be at least 8 characters long");
+      toast.error("Password must be at least 8 characters long");
     } else {
       setLoading(true);
-      setError("");
 
       try {
-        await axios.post("/api/users/resetpassword", {
+        const response = await axios.post("/api/users/resetpassword", {
           token,
           newPassword: password,
         });
-        console.log("Password reset successful");
-        router.push("/login"); // Redirect to login page after successful reset
+        if (response.data.status === 200) {
+          toast.success(response.data.message);
+          setTimeout(() => {
+            router.push("/login"); // Redirect to login page after successful reset
+          }, 2000);
+        } else {
+          toast.error(response.data.message);
+        }
       } catch (error) {
-        console.error("Password reset failed:", error);
-        setError("Failed to reset password. Please try again.");
+        toast.error("Failed to reset password. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -90,8 +94,6 @@ const ResetPasswordPage = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </div>
-
-            {error && <div className="text-error text-sm mt-2">{error}</div>}
 
             <div className="form-control mt-6">
               <button
